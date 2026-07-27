@@ -1,0 +1,118 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://art/BG_01.png" type="Texture" id=1]
+[ext_resource path="res://art/ui/Wheel.png" type="Texture" id=2]
+[ext_resource path="res://art/ui/Module.png" type="Texture" id=3]
+[ext_resource path="res://art/ui/Module_percs.png" type="Texture" id=4]
+[ext_resource path="res://scripts/grid.gd" type="Script" id=5]
+[ext_resource path="res://scripts/ice_holder.gd" type="Script" id=6]
+[ext_resource path="res://scripts/lock_holder.gd" type="Script" id=7]
+
+[node name="game_window" type="Node2D"]
+
+[node name="background" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )
+
+[node name="Wheel" type="TextureRect" parent="."]
+margin_left = -51.0
+margin_top = -66.0
+margin_right = 189.0
+margin_bottom = 208.0
+texture = ExtResource( 2 )
+
+[node name="Module" type="TextureRect" parent="."]
+margin_left = 33.0
+margin_top = 1789.0
+margin_right = 217.0
+margin_bottom = 1973.0
+texture = ExtResource( 3 )
+
+[node name="Module2" type="TextureRect" parent="."]
+margin_left = 200.0
+margin_top = 1789.0
+margin_right = 384.0
+margin_bottom = 1973.0
+texture = ExtResource( 3 )
+
+[node name="Module3" type="TextureRect" parent="."]
+margin_left = 34.0
+margin_top = 1620.0
+margin_right = 218.0
+margin_bottom = 1804.0
+texture = ExtResource( 3 )
+
+[node name="Module4" type="TextureRect" parent="."]
+margin_left = 201.0
+margin_top = 1621.0
+margin_right = 385.0
+margin_bottom = 1805.0
+texture = ExtResource( 3 )
+
+[node name="Module5" type="TextureRect" parent="."]
+margin_left = 369.0
+margin_top = 1621.0
+margin_right = 553.0
+margin_bottom = 1805.0
+texture = ExtResource( 3 )
+
+[node name="Module_percs_01" type="TextureRect" parent="."]
+margin_left = 44.0
+margin_top = 2010.0
+margin_right = 206.0
+margin_bottom = 2172.0
+texture = ExtResource( 4 )
+
+[node name="Module_percs_02" type="TextureRect" parent="."]
+margin_left = 213.0
+margin_top = 2011.0
+margin_right = 375.0
+margin_bottom = 2173.0
+texture = ExtResource( 4 )
+
+[node name="Module_percs_03" type="TextureRect" parent="."]
+margin_left = 385.0
+margin_top = 2011.0
+margin_right = 547.0
+margin_bottom = 2173.0
+texture = ExtResource( 4 )
+
+[node name="grid" type="Node2D" parent="."]
+script = ExtResource( 5 )
+width = 6
+height = 8
+x_start = 126
+y_start = 1880
+offset = 168
+y_offset = 1
+empty_spaces = PoolVector2Array( 0, 0, 5, 0, 0, 7, 5, 7, 2, 3, 3, 3, 2, 4, 3, 4 )
+ice_spaces = PoolVector2Array( 2, 0, 3, 0, 2, 7, 3, 7 )
+lock_spaces = PoolVector2Array( 2, 2, 3, 2, 2, 5, 3, 5 )
+
+[node name="ice_holder" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="lock_holder" type="Node2D" parent="."]
+script = ExtResource( 7 )
+
+[node name="destroy_timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="collapse_timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="refill_timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="damage_ice" from="grid" to="ice_holder" method="_on_grid_damage_ice"]
+[connection signal="damage_lock" from="grid" to="lock_holder" method="_on_grid_damage_lock"]
+[connection signal="make_ice" from="grid" to="ice_holder" method="_on_grid_make_ice"]
+[connection signal="make_lock" from="grid" to="lock_holder" method="_on_grid_make_lock"]
+[connection signal="remove_lock" from="lock_holder" to="grid" method="_on_lock_holder_remove_lock"]
+[connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
+[connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
+[connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
